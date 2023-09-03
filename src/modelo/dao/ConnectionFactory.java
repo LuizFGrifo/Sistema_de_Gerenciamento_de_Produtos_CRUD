@@ -7,7 +7,7 @@ public class ConnectionFactory {
 		String url = "jdbc:mysql://localhost/loja" + 
 			"?useTimezone=true&serverTimezone=America/Sao_Paulo";
 		return DriverManager.getConnection(
-				url, "user", "password");
+				url, "root", "Lf37691046");
 	}
 }
 

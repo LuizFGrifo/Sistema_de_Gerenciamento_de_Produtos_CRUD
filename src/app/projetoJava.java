@@ -38,6 +38,17 @@ public class projetoJava extends JFrame {
 		
 		// e -> { ... } cria uma implementação do método actionPerformed. 
 		btnInsert.addActionListener(e -> {
+			// Remove espaços em branco para não contar como preenchimento
+			String descricao = txtDesc.getText().trim();
+		    String precoText = txtPrice.getText().trim();
+		    String validityText = txtValidity.getText().trim();
+
+		    // Verificar se os campos obrigatórios estão preenchidos
+		    if (descricao.isEmpty() || precoText.isEmpty() || validityText.isEmpty()) {
+		        JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+		        return; // Sai da ação sem inserir os dados
+		    }
+		    
 		    Produto p = new Produto();
 		    p.setDescricao(txtDesc.getText());
 		    p.setPreco(Double.parseDouble(txtPrice.getText()));
@@ -50,14 +61,14 @@ public class projetoJava extends JFrame {
 
 		        try (Connection connection = ConnectionFactory.getConnection()) {
 		            ProdutoDAO.insere(p);
-		            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+		            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 		        } catch (Exception ex) {
 		            ex.printStackTrace();
-		            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto!");
+		            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto!", "Erro", JOptionPane.ERROR_MESSAGE);
 		        }
 		    } catch (ParseException ex) {
 		        ex.printStackTrace();
-		        JOptionPane.showMessageDialog(null, "Formato de data inválido!");
+		        JOptionPane.showMessageDialog(null, "Formato de data inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
 		    }
 		});
 		
@@ -117,21 +128,21 @@ public class projetoJava extends JFrame {
 		                produtoAtual.setValidade(sqlDate);
 		            } catch (ParseException ex) {
 		                ex.printStackTrace();
-		                JOptionPane.showMessageDialog(null, "Formato de data inválido!");
+		                JOptionPane.showMessageDialog(null, "Formato de data inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
 		                return;
 		            }
 
 		            if (ProdutoDAO.altera(produtoAtual)) {
-		                JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!");
+		                JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Erro ao atualizar produto.");
+		                JOptionPane.showMessageDialog(null, "Erro ao atualizar produto.", "Erro", JOptionPane.ERROR_MESSAGE);
 		            }
 		        } else {
-		            JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+		            JOptionPane.showMessageDialog(null, "Produto não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
 		        }
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
-		        JOptionPane.showMessageDialog(null, "Erro ao atualizar produto!");
+		        JOptionPane.showMessageDialog(null, "Erro ao atualizar produto!", "Erro", JOptionPane.ERROR_MESSAGE);
 		    }
 		});
 		
@@ -140,9 +151,9 @@ public class projetoJava extends JFrame {
 				int deleteID = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do produto para deletar:"));
 				
 				if(ProdutoDAO.exclui(deleteID)) {
-					JOptionPane.showMessageDialog(null, "Produto excluído");
+					JOptionPane.showMessageDialog(null, "Produto excluído", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+					JOptionPane.showMessageDialog(null, "Produto não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -188,7 +199,11 @@ public class projetoJava extends JFrame {
 		lblDesc.setForeground(Color.WHITE);
 		lblPrice.setForeground(Color.WHITE);
 		lblValidity.setForeground(Color.WHITE);
-
+		// Define um cursor diferente
+		btnInsert.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnView.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnUpdate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
 		pn.setBorder(border);
 		pn.add(lblDesc); pn.add(txtDesc);

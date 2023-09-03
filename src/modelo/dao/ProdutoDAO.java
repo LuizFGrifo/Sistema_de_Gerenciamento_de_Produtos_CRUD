@@ -2,6 +2,9 @@ package modelo.dao;
 
 import java.sql.*;
 import java.util.*;
+
+import javax.swing.JOptionPane;
+
 import modelo.entidades.*;
 
 public class ProdutoDAO {
